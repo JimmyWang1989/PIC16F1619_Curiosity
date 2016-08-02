@@ -12,15 +12,6 @@
         <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
         <itemPath>mcc_generated_files/tmr0.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="f1" displayName="QP-nano" projectFiles="true">
-        <itemPath>qpn/include/qassert.h</itemPath>
-        <itemPath>qpn/include/qepn.h</itemPath>
-        <itemPath>qpn/include/qfn.h</itemPath>
-        <itemPath>qpn/include/qpn.h</itemPath>
-        <itemPath>qpn/include/qvn.h</itemPath>
-      </logicalFolder>
-      <itemPath>qpn_conf.h</itemPath>
-      <itemPath>blinky.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -37,14 +28,7 @@
         <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
         <itemPath>mcc_generated_files/tmr0.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="f1" displayName="QP-nano" projectFiles="true">
-        <itemPath>qpn/source/qepn.c</itemPath>
-        <itemPath>qpn/source/qfn.c</itemPath>
-        <itemPath>qpn/source/qfn_init.c</itemPath>
-        <itemPath>qpn/source/qvn.c</itemPath>
-      </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>blinky.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -94,8 +78,7 @@
       <HI-TECH-COMP>
         <property key="asmlist" value="true"/>
         <property key="define-macros" value=""/>
-        <property key="extra-include-directories"
-                  value="qpn\include;qpn\ports\pic16\qv\xc8;.\"/>
+        <property key="extra-include-directories" value=""/>
         <property key="identifier-length" value="255"/>
         <property key="operation-mode" value="free"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
@@ -114,7 +97,7 @@
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
         <property key="verbose" value="false"/>
-        <property key="warning-level" value="3"/>
+        <property key="warning-level" value="-3"/>
         <property key="what-to-do" value="ignore"/>
       </HI-TECH-COMP>
       <HI-TECH-LINK>
