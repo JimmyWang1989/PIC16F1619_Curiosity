@@ -62,11 +62,7 @@ void PIN_MANAGER_Initialize(void)
     TRISA = 0x11;
 
     OPTION_REGbits.nWPUEN = 0x0;
-
-
-
 }
-
 
 void PIN_MANAGER_IOC(void)
 {    

@@ -75,23 +75,17 @@
 
 void SYSTEM_Initialize(void)
 {
-    
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
-    TMR0_Initialize();
 }
 
 void OSCILLATOR_Initialize(void)
 {
-    // SCS FOSC; SPLLEN disabled; IRCF 16MHz_HF; 
+    // SCS FOSC; SPLLEN disabled; IRCF 16MHz_HF;
     OSCCON = 0x78;
-    // TUN 0; 
+    // TUN 0;
     OSCTUNE = 0x00;
     // Set the secondary oscillator
-    
 }
 
-        
-/**
- End of File
-*/
+/** End of File */

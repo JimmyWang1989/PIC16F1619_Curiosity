@@ -18,6 +18,7 @@
  * Includes
  ******************************************************************************/
 #include "mcc_generated_files/mcc.h"
+#include "scheduler.h"
 
 /*******************************************************************************
  * Variables
@@ -26,6 +27,11 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+void blinking(void)
+{
+    IO_RA2_Toggle();
+}
 
 /** Main application */
 void main(void)
@@ -48,13 +54,32 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
-    // IO_RA1_SetLow();
-    // IO_RA2_SetLow();
-    // IO_RA5_SetLow();
-    // IO_RC5_SetLow();
+    IO_RA1_SetLow();
+    IO_RA2_SetLow();
+    IO_RA5_SetLow();
+    IO_RC5_SetLow();
+
+    SCH_Init();
+    SCH_AddTask(blinking, 0, 125);
+    SCH_Start();
 
     while(1)
     {
+        SCH_DispatchTasks();
     }
 }
+
+void SCH_Start(void)
+{
+    INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
+
+    TMR0_Initialize();
+}
+
+void SCH_GoToSleep(void)
+{
+    // Sleep();
+}
+
 /** End of File */

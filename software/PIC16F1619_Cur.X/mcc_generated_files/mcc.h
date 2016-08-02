@@ -80,8 +80,6 @@ void SYSTEM_Initialize(void);
  */
 void OSCILLATOR_Initialize(void);
 
-        
-
 #endif	/* MCC_H */
 /**
  End of File

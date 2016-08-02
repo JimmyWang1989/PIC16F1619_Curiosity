@@ -49,6 +49,7 @@
 
 #include <xc.h>
 #include "tmr0.h"
+#include "scheduler.h"
 
 /**
   Section: Global Variables Definitions
@@ -121,6 +122,8 @@ void TMR0_CallBack(void)
 {
     // Add your custom callback code here
     // this code executes every 1 TMR0 periods
+
+    SCH_Update();
 }
 
 /**
