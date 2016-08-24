@@ -1,0 +1,252 @@
+
+# 1 "scheduler/scheduler.c"
+
+# 13 "D:\ProgramFiles\Microchip\xc8\v1.38\include\stdint.h"
+typedef signed char int8_t;
+
+# 20
+typedef signed int int16_t;
+
+# 28
+typedef signed short long int int24_t;
+
+# 36
+typedef signed long int int32_t;
+
+# 43
+typedef unsigned char uint8_t;
+
+# 49
+typedef unsigned int uint16_t;
+
+# 56
+typedef unsigned short long int uint24_t;
+
+# 63
+typedef unsigned long int uint32_t;
+
+# 71
+typedef signed char int_least8_t;
+
+# 78
+typedef signed int int_least16_t;
+
+# 90
+typedef signed short long int int_least24_t;
+
+# 98
+typedef signed long int int_least32_t;
+
+# 105
+typedef unsigned char uint_least8_t;
+
+# 111
+typedef unsigned int uint_least16_t;
+
+# 121
+typedef unsigned short long int uint_least24_t;
+
+# 128
+typedef unsigned long int uint_least32_t;
+
+# 137
+typedef signed char int_fast8_t;
+
+# 144
+typedef signed int int_fast16_t;
+
+# 156
+typedef signed short long int int_fast24_t;
+
+# 164
+typedef signed long int int_fast32_t;
+
+# 171
+typedef unsigned char uint_fast8_t;
+
+# 177
+typedef unsigned int uint_fast16_t;
+
+# 187
+typedef unsigned short long int uint_fast24_t;
+
+# 194
+typedef unsigned long int uint_fast32_t;
+
+# 200
+typedef int32_t intmax_t;
+
+
+
+
+typedef uint32_t uintmax_t;
+
+
+
+
+typedef int16_t intptr_t;
+
+
+
+
+typedef uint16_t uintptr_t;
+
+# 12 "D:\ProgramFiles\Microchip\xc8\v1.38\include\stdbool.h"
+typedef unsigned char bool;
+
+# 36 "scheduler/scheduler.h"
+void SCH_Init(void);
+
+# 50
+void SCH_Start(void);
+
+# 63
+void SCH_Update(void);
+
+# 110
+uint8_t SCH_AddTask(void (* pFunction)(void),
+const uint16_t delay, const uint16_t period);
+
+# 126
+bool SCH_DeleteTask(const uint8_t taskIndex);
+
+# 137
+void SCH_DispatchTasks(void);
+
+# 161
+void SCH_GoToSleep(void);
+
+# 181
+void SCH_ReportStatus(void);
+
+# 24 "scheduler/scheduler.c"
+typedef struct _taskCB
+{
+void (* pTask)(void);
+uint16_t delay;
+
+# 29
+uint16_t period;
+
+# 31
+uint16_t runMe;
+} taskCB_t;
+
+
+static taskCB_t taskCBs[(2)];
+static uint8_t errorCode;
+
+
+void SCH_Init(void)
+{
+uint8_t i;
+
+for (i = 0; i < (2); i++)
+{
+SCH_DeleteTask(i);
+}
+
+
+errorCode = 0;
+}
+
+void SCH_Update(void)
+{
+uint8_t index;
+
+
+for (index = 0; index < (2); index++)
+{
+
+if (taskCBs[index].pTask)
+{
+if (taskCBs[index].delay == 0)
+{
+
+taskCBs[index].runMe += 1;
+
+if (taskCBs[index].period)
+{
+
+taskCBs[index].delay = taskCBs[index].period;
+}
+}
+else
+{
+
+taskCBs[index].delay -= 1;
+}
+}
+}
+}
+
+uint8_t SCH_AddTask(void (* pFunction)(void),
+const uint16_t delay, const uint16_t peroid)
+{
+uint8_t index = 0;
+
+
+while ((taskCBs[index].pTask != 0) && (index < (2)))
+{
+index++;
+}
+
+
+if ((2) > index)
+{
+
+taskCBs[index].pTask = pFunction;
+taskCBs[index].delay = delay;
+taskCBs[index].period = peroid - 1;
+taskCBs[index].runMe = 0;
+}
+
+return index;
+}
+
+bool SCH_DeleteTask(const uint8_t taskIndex)
+{
+bool result;
+
+if (0x0 == taskCBs[taskIndex].pTask)
+{
+result = 0;
+}
+else
+{
+taskCBs[taskIndex].pTask = 0x0;
+taskCBs[taskIndex].delay = 0x0;
+taskCBs[taskIndex].period = 0x0;
+taskCBs[taskIndex].runMe = 0x0;
+
+result = 1;
+}
+
+return result;
+}
+
+void SCH_DispatchTasks(void)
+{
+uint8_t index;
+
+
+for (index = 0; index < (2); index++)
+{
+if (taskCBs[index].runMe > 0)
+{
+(*taskCBs[index].pTask)();
+
+taskCBs[index].runMe -= 1;
+
+# 142
+if (taskCBs[index].period == 0)
+{
+SCH_DeleteTask(index);
+}
+}
+}
+
+# 153
+SCH_GoToSleep();
+}
+

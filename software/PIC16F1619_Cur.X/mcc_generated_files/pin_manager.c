@@ -13,7 +13,7 @@
   Description:
     This header file provides implementations for pin APIs for all pins selected in the GUI.
     Generation Information :
-        Product Revision  :  MPLAB(c) Code Configurator - 3.15.0
+        Product Revision  :  MPLAB(c) Code Configurator - 3.16
         Device            :  PIC16F1619
         Driver Version    :  1.02
     The generated drivers are tested against the following:
@@ -45,6 +45,7 @@
 
 #include <xc.h>
 #include "pin_manager.h"
+#include <stdbool.h>
 
 void PIN_MANAGER_Initialize(void)
 {
@@ -62,10 +63,23 @@ void PIN_MANAGER_Initialize(void)
     TRISA = 0x11;
 
     OPTION_REGbits.nWPUEN = 0x0;
-}
 
-void PIN_MANAGER_IOC(void)
-{    
+
+    bool state = GIE;
+    GIE = 0;
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
+    PPSLOCKbits.PPSLOCKED = 0x00; // unlock PPS
+
+    RC5PPS = 0x0E;   //RC5->PWM3:PWM3OUT;
+    T2PPS = 0x05;   //RA5->TMR2:T2IN;
+
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
+    PPSLOCKbits.PPSLOCKED = 0x01; // lock PPS
+
+    GIE = state;
+
 }
 
 /**

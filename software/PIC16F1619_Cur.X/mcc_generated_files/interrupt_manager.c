@@ -15,7 +15,7 @@
     For individual peripheral handlers please see the peripheral driver for
     all modules selected in the GUI.
     Generation Information :
-        Product Revision  :  MPLAB(c) Code Configurator - 3.15.0
+        Product Revision  :  MPLAB(c) Code Configurator - 3.16
         Device            :  PIC16F1619
         Driver Version    :  1.02
     The generated drivers are tested against the following:

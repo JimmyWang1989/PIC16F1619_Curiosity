@@ -13,7 +13,7 @@
   @Description
     This source file provides APIs for TMR0.
     Generation Information :
-        Product Revision  :  MPLAB(c) Code Configurator - 3.15.0
+        Product Revision  :  MPLAB(c) Code Configurator - 3.16
         Device            :  PIC16F1619
         Driver Version    :  2.00
     The generated drivers are tested against the following:
@@ -49,7 +49,6 @@
 
 #include <xc.h>
 #include "tmr0.h"
-#include "scheduler.h"
 
 /**
   Section: Global Variables Definitions
@@ -68,17 +67,20 @@ void TMR0_Initialize(void)
     // PSA assigned; PS 1:128; TMRSE Increment_hi_lo; mask the nWPUEN and INTEDG bits
     OPTION_REG = (OPTION_REG & 0xC0) | 0xD6 & 0x3F; 
 
-    // TMR0 0; 
-    TMR0 = 0x00;
+    // TMR0 6; 
+    TMR0 = 0x06;
 
     // Load the TMR value to reload variable
-    timer0ReloadVal= 0;
+    timer0ReloadVal= 6;
 
     // Clear Interrupt flag before enabling the interrupt
     INTCONbits.TMR0IF = 0;
 
     // Enabling TMR0 interrupt
     INTCONbits.TMR0IE = 1;
+
+    // Set Default Interrupt Handler
+    TMR0_SetInterruptHandler(TMR0_DefaultInterruptHandler);
 }
 
 
@@ -106,13 +108,13 @@ void TMR0_Reload(void)
 void TMR0_ISR(void)
 {
 
-    // clear the TMR0 interrupt flag
+    // Clear the TMR0 interrupt flag
     INTCONbits.TMR0IF = 0;
 
     TMR0 = timer0ReloadVal;
 
     // ticker function call;
-    // ticker is 1 -> Callback function gets called everytime this ISR executes
+    // ticker is 1 -> Callback function gets called every time this ISR executes
     TMR0_CallBack();
 
     // add your TMR0 interrupt custom code
@@ -121,9 +123,20 @@ void TMR0_ISR(void)
 void TMR0_CallBack(void)
 {
     // Add your custom callback code here
-    // this code executes every 1 TMR0 periods
 
-    SCH_Update();
+    if(TMR0_InterruptHandler)
+    {
+        TMR0_InterruptHandler();
+    }
+}
+
+void TMR0_SetInterruptHandler(void* InterruptHandler){
+    TMR0_InterruptHandler = InterruptHandler;
+}
+
+void TMR0_DefaultInterruptHandler(void){
+    // add your TMR0 interrupt custom code
+    // or set custom function using TMR0_SetInterruptHandler()
 }
 
 /**

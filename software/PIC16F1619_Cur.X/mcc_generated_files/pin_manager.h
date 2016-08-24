@@ -13,7 +13,7 @@
   @Description:
     This header file provides implementations for pin APIs for all pins selected in the GUI.
     Generation Information :
-        Product Revision  :  MPLAB(c) Code Configurator - 3.15.0
+        Product Revision  :  MPLAB(c) Code Configurator - 3.16
         Device            :  PIC16F1619
         Version           :  1.01
     The generated drivers are tested against the following:
@@ -113,20 +113,20 @@
 #define IO_RA5_ResetPullup()   do { WPUA5 = 0; } while(0)
 
 
-// get/set IO_RC5 aliases
-#define IO_RC5_TRIS               TRISC5
-#define IO_RC5_LAT                LATC5
-#define IO_RC5_PORT               RC5
-#define IO_RC5_WPU                WPUC5
-#define IO_RC5_SetHigh()    do { LATC5 = 1; } while(0)
-#define IO_RC5_SetLow()   do { LATC5 = 0; } while(0)
-#define IO_RC5_Toggle()   do { LATC5 = ~LATC5; } while(0)
-#define IO_RC5_GetValue()         PORTCbits.RC5
-#define IO_RC5_SetDigitalInput()    do { TRISC5 = 1; } while(0)
-#define IO_RC5_SetDigitalOutput()   do { TRISC5 = 0; } while(0)
+// get/set IO_RA5 aliases
+#define IO_RA5_TRIS               TRISA5
+#define IO_RA5_LAT                LATA5
+#define IO_RA5_PORT               RA5
+#define IO_RA5_WPU                WPUA5
+#define IO_RA5_SetHigh()    do { LATA5 = 1; } while(0)
+#define IO_RA5_SetLow()   do { LATA5 = 0; } while(0)
+#define IO_RA5_Toggle()   do { LATA5 = ~LATA5; } while(0)
+#define IO_RA5_GetValue()         PORTAbits.RA5
+#define IO_RA5_SetDigitalInput()    do { TRISA5 = 1; } while(0)
+#define IO_RA5_SetDigitalOutput()   do { TRISA5 = 0; } while(0)
 
-#define IO_RC5_SetPullup()    do { WPUC5 = 1; } while(0)
-#define IO_RC5_ResetPullup()   do { WPUC5 = 0; } while(0)
+#define IO_RA5_SetPullup()    do { WPUA5 = 1; } while(0)
+#define IO_RA5_ResetPullup()   do { WPUA5 = 0; } while(0)
 
 
 
@@ -142,17 +142,9 @@
  */
 void PIN_MANAGER_Initialize (void);
 
-/**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Interrupt on Change Handling routine
- * @Example
-    PIN_MANAGER_IOC();
- */
-void PIN_MANAGER_IOC(void);
+
+
+
 
 #endif // PIN_MANAGER_H
 /**

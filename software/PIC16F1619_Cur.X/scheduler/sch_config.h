@@ -17,6 +17,6 @@
 #ifndef __SCH_CONFIG_H__
 #define __SCH_CONFIG_H__
 
-#define SCH_MAX_TASKS (1)
+#define SCH_MAX_TASKS (2)
 
 #endif /* __SCH_CONFIG_H__ */

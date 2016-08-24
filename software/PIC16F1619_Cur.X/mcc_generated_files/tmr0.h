@@ -13,7 +13,7 @@
   @Description
     This header file provides APIs for TMR0.
     Generation Information :
-        Product Revision  :  MPLAB(c) Code Configurator - 3.15.0
+        Product Revision  :  MPLAB(c) Code Configurator - 3.16
         Device            :  PIC16F1619
         Driver Version    :  2.00
     The generated drivers are tested against the following:
@@ -217,6 +217,57 @@ void TMR0_Reload(void);
   @Description
     Timer Interrupt Service Routine is called by the Interrupt Manager.
 
+  @Returns
+    None
+
+  @Param
+    None
+*/
+void TMR0_ISR(void);
+
+/**
+  @Summary
+    CallBack function.
+
+  @Description
+    This routine is called by the Interrupt Manager.
+
+  @Preconditions
+    None
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+void TMR0_CallBack(void);
+
+/**
+  @Summary
+    Set Timer Interrupt Handler
+
+  @Description
+    This sets the function to be called during the ISR
+
+  @Preconditions
+    Initialize  the TMR0 module with interrupt before calling this.
+
+  @Param
+    Address of function to be set
+
+  @Returns
+    None
+*/
+ void TMR0_SetInterruptHandler(void *InterruptHandler);
+
+/**
+  @Summary
+    Timer Interrupt Handler
+
+  @Description
+    This is a function pointer to the function that will be called during the ISR
+
   @Preconditions
     Initialize  the TMR0 module with interrupt before calling this isr.
 
@@ -226,17 +277,17 @@ void TMR0_Reload(void);
   @Returns
     None
 */
-void TMR0_ISR(void);
+void (*TMR0_InterruptHandler)(void);
 
 /**
   @Summary
-    CallBack function
+    Default Timer Interrupt Handler
 
   @Description
-    This function is called from the timer ISR. User can write your code in this function.
+    This is the default Interrupt Handler function
 
   @Preconditions
-    Initialize  the TMR0 module with interrupt before calling this function.
+    Initialize  the TMR0 module with interrupt before calling this isr.
 
   @Param
     None
@@ -244,7 +295,7 @@ void TMR0_ISR(void);
   @Returns
     None
 */
-void TMR0_CallBack(void);
+void TMR0_DefaultInterruptHandler(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

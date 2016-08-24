@@ -23,14 +23,22 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+static uint16_t duty = 0;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
 
-void blinking(void)
+void LED_Blink(void)
 {
-    IO_RA2_Toggle();
+    IO_RA5_Toggle();
+}
+
+void LED_Breath(void)
+{
+    duty = (duty + 128) % 1024;
+
+    PWM3_LoadDutyValue(duty);
 }
 
 /** Main application */
@@ -57,10 +65,10 @@ void main(void)
     IO_RA1_SetLow();
     IO_RA2_SetLow();
     IO_RA5_SetLow();
-    IO_RC5_SetLow();
 
     SCH_Init();
-    SCH_AddTask(blinking, 0, 125);
+    SCH_AddTask(LED_Blink, 0, 125);
+    SCH_AddTask(LED_Breath, 1, 125);
     SCH_Start();
 
     while(1)
@@ -71,10 +79,11 @@ void main(void)
 
 void SCH_Start(void)
 {
+    TMR0_Initialize();
+    TMR0_SetInterruptHandler(SCH_Update);
+
     INTERRUPT_PeripheralInterruptEnable();
     INTERRUPT_GlobalInterruptEnable();
-
-    TMR0_Initialize();
 }
 
 void SCH_GoToSleep(void)
